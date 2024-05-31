@@ -16,7 +16,7 @@ export abstract class BaseRepo{
     }
 
     // async update(id: number, data:object): Promise<void> {
-    //     await db.update(this.table).set(data).where('id');
+    //     await db.update(this.table).set(data).where();
     // }
 
     // async delete(id: number): Promise<void> {
