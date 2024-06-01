@@ -1,28 +1,29 @@
-import { MySqlTable} from "drizzle-orm/mysql-core";
+import { MySqlInt, MySqlTable } from "drizzle-orm/mysql-core";
 import { db } from "../../infra/db/connection";
-import { SQL, eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
-export abstract class BaseRepo<TColumnsMap extends Record<string, any>> {
-    private table: MySqlTable;
-    private columns: TColumnsMap; 
+export abstract class BaseRepo {
+  private table: MySqlTable;
 
-    constructor(table: MySqlTable, columns: TColumnsMap) {
-        this.table = table;
-        this.columns = columns;
-    }
+  constructor(table: MySqlTable) {
+    this.table = table;
+  }
 
-    public async insert(data: object): Promise<{id:number, pid:string}> {
-        const result = await db.insert(this.table).values(data).execute();
+  public async insert(data: object): Promise<{ id: number; pid: string }> {
+    const result = await db.insert(this.table).values(data).execute();
 
-        return {
-            id: result[0].insertId,
-            pid: (data as any).pid
-        };
-    }
+    return {
+      id: result[0].insertId,
+      pid: (data as any).pid,
+    };
+  }
 
-    async update(id: number, data: object): Promise<void> {
-        const whereClause: SQL<unknown> = eq(this.columns.id, id);
+  public async update(id: number, data: object): Promise<void> {
 
-        await db.update(this.table).set(data).where(whereClause).execute();
-        }
+    await db
+      .update(this.table)
+      .set(data)
+      .where(eq(sql`id`, id))
+      .execute();
+  }
 }
