@@ -16,11 +16,10 @@ export class CreateUserController extends Controller {
 			phone: request.body.phone,
 			email: request.body.email,
 			password: request.body.password,
-			// roleId: undefined,
 		};
 
-		await this.useCase.execute(dto);
+		const result = await this.useCase.execute(dto);
 
-		return this.sendResponse(response, 201);
+		return this.sendResponse(response, 201, result);
 	}
 }

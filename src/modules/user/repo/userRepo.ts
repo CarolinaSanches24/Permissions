@@ -6,7 +6,7 @@ export class UserRepo extends BaseRepo{
 	  super(userSchema);
 	}
   
-	public async insert(data: User): Promise<any> {
+	public async insert(data: User): Promise<{id:number, pid:string}> {
 	  return super.insert(data);
 	}
   }

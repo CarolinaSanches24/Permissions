@@ -12,7 +12,11 @@ export abstract class BaseRepo{
     
   public async insert(data: object): Promise<any> {
         const result = await db.insert(this.table).values(data).execute();
-        return result[0];   
+
+        return {
+            id:result[0].insertId,
+            pid:(data as any).pid
+        }
     }
 
     // async update(id: number, data:object): Promise<void> {
