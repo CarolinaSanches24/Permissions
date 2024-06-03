@@ -5,4 +5,6 @@ export interface  SessionUserDTO{
 
 export interface SessionUserResponseDTO{
     token:string;
+    expiresIn: number;
+    expireDate: number;
 }
