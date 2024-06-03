@@ -14,17 +14,17 @@ export class SessionUserUseCase implements UseCase<SessionUserDTO, Promise<void>
 
 		const user = await this.userRepo.findByEmail(request.email);
 
-        if (!user) {
-            throw new UseCaseError('User not found', 404);
-        }
+        // if (!user) {
+        //     throw new UseCaseError('User not found', 404);
+        // }
 
-        const isValidPassword = await encryption.compare(request.password, user.password);
+        // const isValidPassword = await encryption.compare(request.password, user.password);
 
-        if (!isValidPassword) {
-            throw new Error('Invalid password');
-        }
+        // if (!isValidPassword) {
+        //     throw new Error('Invalid password');
+        // }
 
-        return;
+        // return;
 		
 	}
 }
