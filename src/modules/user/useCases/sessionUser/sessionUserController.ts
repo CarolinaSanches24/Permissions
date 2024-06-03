@@ -13,13 +13,14 @@ export class SessionUserController extends Controller {
 	}
 
 	async executeImpl(request: DecodedExpressRequest, response: Response) {
-		const dto: SessionUserDTO = {
+		
+        const dto: SessionUserDTO = {
 			email: request.body.email,
 			password: request.body.password,
 		};
 
 		const result = await this.useCase.execute(dto);
 
-		return this.sendResponse(response, 201, result);
+		return this.sendResponse(response, 200, result);
 	}
 }
