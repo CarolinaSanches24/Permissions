@@ -1,17 +1,18 @@
-import { send } from 'process';
 import { UseCase, UseCaseError } from '../../../../services/core/useCase';
 import { encryption } from '../../../../services/utils/encryption';
+import { env } from '../../../../utils/env';
 import { UserRepo } from '../../repo/userRepo';
-import { SessionUserDTO } from './sessionUserDTO';
+import { SessionUserDTO,  SessionUserResponseDTO } from './sessionUserDTO';
+import { sign } from 'jsonwebtoken';
 
-export class SessionUserUseCase implements UseCase<SessionUserDTO, Promise<void>>{
+export class SessionUserUseCase implements UseCase<SessionUserDTO, Promise<SessionUserResponseDTO> >{
 	private userRepo: UserRepo;
 
 	constructor(userRepo: UserRepo) {
 		this.userRepo = userRepo;
 	}
 
-	public async execute(request: SessionUserDTO): Promise<any> {
+	public async execute(request: SessionUserDTO): Promise<SessionUserResponseDTO> {
 
 		const user = await this.userRepo.findByEmail(request.email);
 
@@ -20,6 +21,12 @@ export class SessionUserUseCase implements UseCase<SessionUserDTO, Promise<void>
         const isValidPassword = await encryption.compare(request.password, user.password);
 
         if (!isValidPassword)  throw new UseCaseError('Password is incorrect', 401);
-		return 'ok'
+	
+		const token = sign({}, env.variables.JWT_SECRET, {
+			subject:user.id?.toString(),
+			expiresIn: '1d'
+		});
+
+		return {token}
 	}
 }

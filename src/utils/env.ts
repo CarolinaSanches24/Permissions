@@ -6,6 +6,7 @@ export default interface Variables {
 	DB_HOST:string;
 	DB_NAME:string;
 	DB_PORT:string;
+	JWT_SECRET:string;
 
 }
 
@@ -15,10 +16,8 @@ class Env {
         DB_PASS:this.getEnv('DB_PASS'),
 		DB_HOST:this.getEnv('DB_HOST'),
 		DB_NAME:this.getEnv('DB_NAME'),
-		DB_PORT:this.getEnv('DB_PORT')
-
-
-		
+		DB_PORT:this.getEnv('DB_PORT'),
+		JWT_SECRET:this.getEnv('JWT_SECRET')
 	};
 
 	private getEnv(envName: string): string {

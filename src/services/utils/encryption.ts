@@ -41,8 +41,14 @@ export class Encryption {
 	}
 
 	public async compare(data: string, password: string): Promise<boolean> {
-		return data === password;
-	}
+        return this.compareHashes(data, password);
+    }
+
+    private async compareHashes(data: string, hashedData: string): Promise<boolean> {
+        const { salt, iterations } = this.parsePassword(hashedData);
+        const hashedInput = await this.encrypt(data, iterations, salt);
+        return hashedInput === hashedData;
+    }
 
 	public async hashString(data: string): Promise<string> {
 		return createHash('sha256').update(data).digest('hex');
