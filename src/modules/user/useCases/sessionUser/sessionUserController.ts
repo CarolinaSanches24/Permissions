@@ -19,7 +19,7 @@ export class SessionUserController extends Controller {
 			password: request.body.password,
 		};
 
-		const result = await this.useCase.execute(dto);
+	    const result = await this.useCase.execute(dto);
 
 		return this.sendResponse(response, 200, result);
 	}
