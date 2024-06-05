@@ -1,4 +1,3 @@
-
 import { permissionRepo } from "../../repo/permissionRepo";
 import { CreatePermissionController } from "./createPermissionController";
 import { CreatePermissionUseCase } from "./createPermissionUseCase";

@@ -1,24 +1,25 @@
 import { Response } from "express";
 import { Controller } from "../../../../services/core/controller";
 import { DecodedExpressRequest } from "../../../../infra/http/decodedExpressRequest";
-import { CreatePermissionDTO } from "./createPermissionDTO";
-import { CreatePermissionUseCase } from "./createPermissionUseCase";
+import { CreateRoleDTO } from "./createRoleDTO";
+import { CreateRoleUseCase } from "./createRoleUseCase";
 
-export class CreatePermissionController extends Controller {
-  private useCase: CreatePermissionUseCase;
 
-  constructor(useCase: CreatePermissionUseCase) {
+export class CreateRoleController extends Controller {
+  private useCase: CreateRoleUseCase;
+
+  constructor(useCase: CreateRoleUseCase) {
     super();
     this.useCase = useCase;
   }
 
   async executeImpl(request: DecodedExpressRequest, response: Response) {
-    const dto: CreatePermissionDTO = {
+    const dto: CreateRoleDTO = {
       name: request.body.name,
       description: request.body.description,
     };
 
-     await this.useCase.execute(dto);
+    await this.useCase.execute(dto);
 
     return this.sendResponse(response, 204);
   }

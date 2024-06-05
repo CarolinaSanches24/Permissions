@@ -1,13 +1,13 @@
 import { v4 } from "uuid";
 import { UseCase, UseCaseError } from "../../../../services/core/useCase";
-import { CreatePermissionDTO, CreatePermissionResponseDTO } from "./createPermissionDTO";
+import { CreatePermissionDTO} from "./createPermissionDTO";
 import { PermissionRepo } from "../../repo/permissionRepo";
 import { permissionNameEval } from "../../domain/valueObjects/permissionName";
 import { permissionDescriptionEval } from "../../domain/valueObjects/permissionDescription";
 
 export class CreatePermissionUseCase
   implements
-    UseCase<CreatePermissionDTO, Promise<CreatePermissionResponseDTO>>
+    UseCase<CreatePermissionDTO, Promise<void>>
 {
   private permissionRepo: PermissionRepo;
 
@@ -17,7 +17,7 @@ export class CreatePermissionUseCase
 
   public async execute(
     request: CreatePermissionDTO
-  ): Promise<CreatePermissionResponseDTO> {
+  ): Promise<void> {
 
     const name = permissionNameEval.evaluate(request.name);
     const description = permissionDescriptionEval.evaluate(request.description);
@@ -28,15 +28,11 @@ export class CreatePermissionUseCase
 
     if(existPermission)throw new UseCaseError('Permission already exists',400);
 
-    const permission = await this.permissionRepo.insert({
+    await this.permissionRepo.insert({
       pid: v4(),
       name: name.value,
       description: description.value,
     });
-
-    return {
-      id: permission.id,
-      pid: permission.pid,
-    };
+    
   }
 }
