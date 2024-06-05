@@ -6,6 +6,8 @@ export const dbUrl = `mysql://${env.variables.DB_USER}:${env.variables.DB_PASS}@
 export default {
   schema: [
     "./src/infra/db/schemas/user/userSchema.ts",
+    "./src/infra/db/schemas/permissions/permissionsSchema.ts",
+    "./src/infra/db/schemas/roles/rolesSchema.ts"
 ],
   out: "./src/infra/db/drizzle",
   dialect: "mysql",

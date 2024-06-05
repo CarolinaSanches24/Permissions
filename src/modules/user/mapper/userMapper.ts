@@ -1,4 +1,3 @@
-
 import { BaseMapper } from '../../../services/core/baseMapper';
 import {User} from '../domain/user';
 
