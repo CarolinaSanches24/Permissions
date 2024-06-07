@@ -3,7 +3,7 @@ import { permissionsSchema } from '../../../infra/db/schemas/permissions/permiss
 import { Permission } from '../domain/permission';
 import { permissionMapper } from '../mapper/permissionMapper';
 import { db } from '../../../infra/db/connection';
-import { eq } from 'drizzle-orm';
+import { eq , inArray} from 'drizzle-orm';
 
 export class PermissionRepo extends BaseRepo {
     constructor() {
@@ -28,6 +28,12 @@ export class PermissionRepo extends BaseRepo {
 
 		  return undefined;
 		 
+		}
+
+		public async findPermissionsByIds(ids: number[] ): Promise<void> {
+			const res = await db.select().from(permissionsSchema).where(inArray(permissionsSchema.id, ids));
+			
+			console.log(res);
 		}
     }
 

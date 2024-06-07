@@ -5,10 +5,8 @@ export const dbUrl = `mysql://${env.variables.DB_USER}:${env.variables.DB_PASS}@
 
 export default {
   schema: [
-    "./src/infra/db/schemas/user/userSchema.ts",
-    "./src/infra/db/schemas/permissions/permissionsSchema.ts",
-    "./src/infra/db/schemas/roles/rolesSchema.ts"
-],
+    "./src/infra/db/schemas/**/*.ts"  // busca todos os arquivos .ts dentro da pasta schemas e subpastas
+  ],
   out: "./src/infra/db/drizzle",
   dialect: "mysql",
   breakpoints: true

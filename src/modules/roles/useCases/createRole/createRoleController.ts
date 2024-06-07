@@ -4,7 +4,6 @@ import { DecodedExpressRequest } from "../../../../infra/http/decodedExpressRequ
 import { CreateRoleDTO } from "./createRoleDTO";
 import { CreateRoleUseCase } from "./createRoleUseCase";
 
-
 export class CreateRoleController extends Controller {
   private useCase: CreateRoleUseCase;
 
@@ -14,9 +13,11 @@ export class CreateRoleController extends Controller {
   }
 
   async executeImpl(request: DecodedExpressRequest, response: Response) {
+
     const dto: CreateRoleDTO = {
       name: request.body.name,
       description: request.body.description,
+      permissionsIds:request.body.permissionsIds
     };
 
     await this.useCase.execute(dto);
