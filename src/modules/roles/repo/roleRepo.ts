@@ -30,8 +30,7 @@ export class RoleRepo extends BaseRepo {
         return roleRecord;
     }
 
-	
-	  
+
 	public async update(id: number, data: object): Promise<void> {
 		return super.update(id,data);
 	}

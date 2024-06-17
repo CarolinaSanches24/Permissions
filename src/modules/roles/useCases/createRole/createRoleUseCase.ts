@@ -3,9 +3,9 @@ import { UseCase, UseCaseError } from "../../../../services/core/useCase";
 import { roleNameEval } from "../../domain/valueObjects/roleName";
 import { RoleRepo } from "../../repo/roleRepo";
 import { PermissionRepo } from "../../../permissions/repo/permissionRepo";
-import { CreateRoleDTO } from "./createRoleDTO";
+import { CreateRoleDTO, CreateRoleResponseDTO } from "./createRoleDTO";
 
-export class CreateRoleUseCase implements UseCase<CreateRoleDTO, Promise<void>> {
+export class CreateRoleUseCase implements UseCase<CreateRoleDTO, Promise<CreateRoleResponseDTO>> {
   private roleRepo: RoleRepo;
   private permissionRepo: PermissionRepo;
 
@@ -14,16 +14,14 @@ export class CreateRoleUseCase implements UseCase<CreateRoleDTO, Promise<void>> 
     this.permissionRepo = permissionRepo;
   }
 
-  public async execute(request: CreateRoleDTO): Promise<void> {
+  public async execute(request: CreateRoleDTO): Promise<CreateRoleResponseDTO> {
     const name = roleNameEval.evaluate(request.name);
 
     const existRole = await this.roleRepo.findRole(name.value);
     if (existRole) throw new UseCaseError('Role already exists', 400);
 
-    const permissions = await this.permissionRepo.findPermissionsByIds(request.permissionsIds);
-    // if (permissions.length !== request.permissionsIds.length) {
-    //   throw new UseCaseError ('Some permissions are invalid', 400);
-    // }
+     await this.permissionRepo.findPermissionsByIds(request.permissionsIds);
+   
 
     const role = {
       pid: v4(),
@@ -31,9 +29,10 @@ export class CreateRoleUseCase implements UseCase<CreateRoleDTO, Promise<void>> 
       description: request.description
     };
 
-    console.log('Role DTO:', role); // Debug line
-    console.log('Permissions IDs:', request.permissionsIds); // Debug line
 
     await this.roleRepo.insertWithPermissions(role, request.permissionsIds);
+
+    return {role, permissions:request.permissionsIds}
+
   }
 }

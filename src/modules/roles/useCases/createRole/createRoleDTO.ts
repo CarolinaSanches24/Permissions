@@ -6,4 +6,7 @@ export interface CreateRoleDTO extends BaseDomain{
     permissionsIds: number[]; 
 }
 
-export interface CreateRoleResponseDTO {}
+export interface CreateRoleResponseDTO {
+    role:object;
+    permissions:object;
+}

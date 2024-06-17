@@ -20,8 +20,8 @@ export class CreateRoleController extends Controller {
       permissionsIds:request.body.permissionsIds
     };
 
-    await this.useCase.execute(dto);
+    const result =  await this.useCase.execute(dto);
 
-    return this.sendResponse(response, 204);
+    return this.sendResponse(response, 204, result);
   }
 }
